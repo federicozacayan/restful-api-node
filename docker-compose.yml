@@ -2,13 +2,12 @@ version: "2"
 
 services:
   node:
-    image: "node:8"
-    user: "node"
-    working_dir: /home/node/app
+    build: .
+    working_dir: /usr/src/app
     environment:
-      - NODE_ENV=production
+        - NODE_ENV=production #development
     volumes:
-      - ./:/home/node/app
+      - ./:/usr/src/app
     ports:
       - "3000:3000"
     command: bash -c "npm start"

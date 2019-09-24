@@ -1,19 +1,18 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
 
-app.use(morgan('dev'));
-
 mongoose.connect(
-    "mongodb://admin:secret@mongo:27017/myDatabase",
-  {
-    useMongoClient: true
-  }
+    "mongodb://mongo:27017/expressmongo" ,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
 );
 mongoose.Promise = global.Promise;
 
@@ -30,15 +29,11 @@ app.use((req, res, next) => {
   next();
 });
 
-
-const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
-
 
 app.use((req, res, next) => {
     const error = new Error('Not found');
